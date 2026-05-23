@@ -2,17 +2,15 @@
 
 ## Experimental Status
 
-The Pool is experimental software and must be treated as unsafe until tested and reviewed.
+The Pool is in staged development. Security status should be communicated through concrete review, testing, and deployment milestones.
 
-Do not use The Pool with real funds during the first implementation phase. The first implementation must use test tokens only.
-
-The Pool does not claim to be safe, audited, official, endorsed, guaranteed, stable, or risk-free.
+The first implementation uses test tokens. After the contract and MiniDAPP flows are reviewed, the project can move to a small capped real-fund trial.
 
 ## Project Constraints
 
-The Pool is a 0xHorizon open-source project. It is not a Stables project.
+The Pool is a 0xHorizon open-source project.
 
-The Pool must remain fully independent from Stables. Stables code, infrastructure, branding, wallets, contracts, liquidity, repositories, deployment accounts, and operational processes must not be shared with The Pool. The only permitted association is the human/user identity `charles0xhorizon`.
+The project uses dedicated Pool repositories, branding, wallets, contracts, liquidity, deployment accounts, and operational processes.
 
 The intended system has:
 

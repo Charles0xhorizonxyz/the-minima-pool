@@ -4,7 +4,7 @@ Time for a splash.
 
 The Pool is a 0xHorizon open-source project for a decentralized MINIMA / USDT liquidity pool on Minima.
 
-The Pool is independent from Stables. Stables code, infrastructure, branding, wallets, contracts, liquidity, repositories, deployment accounts, and operational processes are not shared with The Pool. The only permitted association is the human/user identity `charles0xhorizon`.
+The Pool uses dedicated repositories, branding, wallets, contracts, liquidity, deployment accounts, and operational processes.
 
 ## Status
 
@@ -14,9 +14,9 @@ Current version:
 v0.0.1 beta
 ```
 
-The Pool is experimental software.
+The Pool is in staged development.
 
-Do not use The Pool with real funds. The first implementation is intended for test-token development and review only.
+The first implementation is intended for test-token development and review. After the contract and MiniDAPP flows are reviewed, the project can move to a small capped real-fund trial.
 
 ## Intended Design
 
@@ -75,6 +75,6 @@ Every swap must include slippage protection through a minimum output amount.
 - X: https://x.com/theminimapool
 - Telegram: https://t.me/theminimapool
 
-## Non-Claims
+## Project Posture
 
-The Pool does not claim to be safe, audited, official, endorsed by Minima, endorsed by the USDT issuer, guaranteed, stable, or risk-free.
+The Pool should publish concrete milestones, testing status, review status, and current pool limits so users can evaluate the system clearly.
