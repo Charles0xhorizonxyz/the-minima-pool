@@ -8,7 +8,7 @@ The first implementation uses test tokens. After the contract and MiniDAPP flows
 
 ## Project Constraints
 
-The Pool is a 0xHorizon open-source project.
+The Pool is a 0xHorizon open-source project distributed as a Minima MiniDAPP.
 
 The project uses dedicated Pool repositories, branding, wallets, contracts, liquidity, deployment accounts, and operational processes.
 

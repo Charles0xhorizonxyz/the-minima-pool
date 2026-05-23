@@ -4,6 +4,8 @@ Time for a splash.
 
 The Pool is a 0xHorizon open-source project for a decentralized MINIMA / USDT liquidity pool on Minima.
 
+The Pool is distributed as a Minima MiniDAPP. It is designed to run locally through Minima rather than through a hosted website or centralized application server.
+
 The Pool uses dedicated repositories, branding, wallets, contracts, liquidity, deployment accounts, and operational processes.
 
 ## Status
@@ -20,7 +22,7 @@ The first implementation is intended for test-token development and review. Afte
 
 ## Intended Design
 
-The Pool is intended to be a local Minima MiniDAPP:
+The Pool is a local Minima MiniDAPP:
 
 - No website dependency
 - No backend server
@@ -29,6 +31,20 @@ The Pool is intended to be a local Minima MiniDAPP:
 - No admin wallet
 - No treasury
 - No hidden fee receiver
+
+## Latest Version
+
+The latest public MiniDAPP release will be published in:
+
+```text
+latest/
+```
+
+Current version target:
+
+```text
+v0.0.1 beta
+```
 
 The interface should help users create valid transactions. The on-chain pool logic must enforce the pool rules.
 
