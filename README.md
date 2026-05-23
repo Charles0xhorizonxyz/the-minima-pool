@@ -71,7 +71,7 @@ Every swap must include slippage protection through a minimum output amount.
 
 ## Links
 
-- GitHub: https://github.com/0xhorizonxzy/the-minima-pool
+- GitHub: https://github.com/Charles0xhorizonxyz/the-minima-pool
 - X: https://x.com/theminimapool
 - Telegram: https://t.me/theminimapool
 
