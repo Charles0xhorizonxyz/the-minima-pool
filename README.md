@@ -52,7 +52,7 @@ https://raw.githubusercontent.com/Charles0xhorizonxyz/the-minima-pool/main/relea
 SHA256:
 
 ```text
-7FF2DD2D137DE757AA56F1E50681596EA5995ADC051BADC29D7365EC07496B5E
+B1B3A4539F6176F76E57B5B3E5F44ACC598D3761B55B272C8414C173BAA11BA9
 ```
 
 Technical review entry point:

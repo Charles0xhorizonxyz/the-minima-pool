@@ -1,13 +1,22 @@
 param(
-    [string]$Version = "0.0.1-beta"
+    [string]$Version = "0.0.1-beta",
+    [switch]$LocalTest,
+    [string]$BuildLabel = "",
+    [string]$DisplayName = ""
 )
 
 $ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $PSScriptRoot
 $DappPath = Join-Path $Root "dapp"
-$ReleasePath = Join-Path $Root "releases\latest"
-$PackageName = "the-pool-$Version.mds.zip"
+$ReleasePath = if ($LocalTest) { Join-Path $Root "releases\local-test" } else { Join-Path $Root "releases\latest" }
+
+if ($LocalTest -and [string]::IsNullOrWhiteSpace($BuildLabel)) {
+    $BuildLabel = Get-Date -Format "yyyyMMdd-HHmmss"
+}
+
+$PackageVersion = if ($LocalTest) { "$Version-$BuildLabel" } else { $Version }
+$PackageName = "the-pool-$PackageVersion.mds.zip"
 $PackagePath = Join-Path $ReleasePath $PackageName
 $ChecksumPath = "$PackagePath.sha256"
 $StagePath = Join-Path $ReleasePath "_staging"
@@ -89,6 +98,16 @@ foreach ($file in $requiredFiles) {
 
 Copy-Item -LiteralPath $assetsPath -Destination (Join-Path $StagePath "assets") -Recurse
 
+if ($LocalTest) {
+    $stageConfPath = Join-Path $StagePath "dapp.conf"
+    $stageConf = Get-Content -Raw -LiteralPath $stageConfPath | ConvertFrom-Json
+    $stageConf.version = $PackageVersion
+    if (-not [string]::IsNullOrWhiteSpace($DisplayName)) {
+        $stageConf.name = $DisplayName
+    }
+    $stageConf | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $stageConfPath
+}
+
 if (Test-Path -LiteralPath $PackagePath) {
     Remove-Item -LiteralPath $PackagePath -Force
 }
@@ -107,3 +126,6 @@ Write-Host "Packaged MiniDAPP:"
 Write-Host "  $PackagePath"
 Write-Host "SHA256:"
 Write-Host "  $($hash.Hash)"
+if ($LocalTest) {
+    Write-Host "Local test package. Not used by the public publish job."
+}

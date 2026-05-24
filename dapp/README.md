@@ -21,7 +21,7 @@ https://raw.githubusercontent.com/Charles0xhorizonxyz/the-minima-pool/main/relea
 SHA256:
 
 ```text
-7FF2DD2D137DE757AA56F1E50681596EA5995ADC051BADC29D7365EC07496B5E
+B1B3A4539F6176F76E57B5B3E5F44ACC598D3761B55B272C8414C173BAA11BA9
 ```
 
 The MiniDAPP package includes a root `favicon.ico` generated from The Pool logo. Minima's MiniDAPP install flow uses the root favicon for the installed-app icon.
@@ -29,6 +29,8 @@ The MiniDAPP package includes a root `favicon.ico` generated from The Pool logo.
 The `dapp.conf` file declares `icon: "pool_icon.png"` and `web: "index.html"`, matching the working convention used by the Stables MiniDAPP package.
 
 When installed inside MiniHub/MDS, the prototype reads real local node balances with `MDS.cmd("balance")` and uses the `sendable` amount for MINIMA and the verified USDT token ID. Local browser preview keeps the static prototype balances as a fallback.
+
+The Telegram icon copies the project Telegram link instead of opening it directly because MiniHub may reject Telegram app URL schemes inside its webview.
 
 The MiniDAPP should eventually include:
 

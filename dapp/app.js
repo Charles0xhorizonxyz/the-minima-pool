@@ -142,18 +142,24 @@ const els = {
   confirmRemove: document.querySelector("#confirmRemove")
 };
 
-document.querySelectorAll("[data-telegram-app]").forEach((link) => {
-  link.addEventListener("click", (event) => {
-    const appUrl = link.dataset.telegramApp;
-    const webUrl = link.dataset.telegramWeb || link.href;
-
-    if (!appUrl) return;
-
+document.querySelectorAll("[data-copy-link]").forEach((link) => {
+  link.addEventListener("click", async (event) => {
     event.preventDefault();
-    window.location.href = appUrl;
-    window.setTimeout(() => {
-      window.open(webUrl, "_blank", "noopener,noreferrer");
-    }, 600);
+
+    const url = link.dataset.copyLink;
+    const label = link.dataset.copyLabel || "Link";
+    if (!url) return;
+
+    try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard API unavailable");
+      }
+
+      await navigator.clipboard.writeText(url);
+      window.alert(`${label} link copied:\n${url}`);
+    } catch (error) {
+      window.prompt(`Copy ${label} link:`, url);
+    }
   });
 });
 

@@ -17,7 +17,7 @@ the-pool-0.0.1-beta.mds.zip
 SHA256:
 
 ```text
-7FF2DD2D137DE757AA56F1E50681596EA5995ADC051BADC29D7365EC07496B5E
+B1B3A4539F6176F76E57B5B3E5F44ACC598D3761B55B272C8414C173BAA11BA9
 ```
 
 Package contents:
@@ -43,3 +43,4 @@ Validation notes:
 - This is a UI prototype with MDS balance reads when installed in MiniHub.
 - Real Minima transaction building is not connected yet.
 - Real local node balances are read with `MDS.cmd("balance")`.
+- The Telegram icon copies the Telegram link instead of navigating directly from MiniHub.
