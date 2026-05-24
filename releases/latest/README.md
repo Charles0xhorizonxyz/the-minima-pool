@@ -17,7 +17,7 @@ the-pool-0.0.1-beta.mds.zip
 SHA256:
 
 ```text
-7F26267299037D9C60628B9ADBF445CC5938B8C74F249C006F0308A979B95263
+0902D5266F4CE2B50FE40CE503109274A406A665B5A6D10B2187C5DC9EA756F3
 ```
 
 Package contents:
@@ -25,7 +25,11 @@ Package contents:
 - `dapp.conf`
 - `index.html`
 - `app.js`
+- `app_icon.png`
+- `mds-2.1.0.js`
+- `pool_icon.png`
 - `styles.css`
+- `favicon.ico`
 - `favicon.svg`
 - `icon.png`
 - `assets/`
@@ -33,7 +37,9 @@ Package contents:
 Validation notes:
 
 - `dapp.conf` is valid JSON.
+- Root `favicon.ico` is included for the MiniDAPP install icon.
+- `dapp.conf` declares `icon: "pool_icon.png"` and `web: "index.html"`.
 - Package permission is `read`.
-- This is a static UI prototype.
+- This is a UI prototype with MDS balance reads when installed in MiniHub.
 - Real Minima transaction building is not connected yet.
-- `mds.js` is not included yet because the prototype does not call the Minima MDS API.
+- Real local node balances are read with `MDS.cmd("balance")`.

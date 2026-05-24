@@ -24,7 +24,12 @@ $requiredFiles = @(
     "dapp.conf",
     "index.html",
     "app.js",
+    "app_icon.png",
+    "icon.png",
+    "pool_icon.png",
+    "mds-2.1.0.js",
     "styles.css",
+    "favicon.ico",
     "favicon.svg"
 )
 
@@ -37,7 +42,7 @@ foreach ($file in $requiredFiles) {
 
 $confPath = Join-Path $DappPath "dapp.conf"
 $conf = Get-Content -Raw -LiteralPath $confPath | ConvertFrom-Json
-foreach ($field in @("name", "version", "description", "permission")) {
+foreach ($field in @("name", "version", "description", "permission", "icon", "web")) {
     if (-not $conf.$field) {
         throw "dapp.conf missing required field: $field"
     }
@@ -57,6 +62,16 @@ if (-not (Test-Path -LiteralPath $iconSource)) {
     throw "Missing icon source asset: assets/the-minima-pool-telegram.png"
 }
 
+$declaredIcon = Join-Path $DappPath $conf.icon
+if (-not (Test-Path -LiteralPath $declaredIcon)) {
+    throw "dapp.conf icon not found: $($conf.icon)"
+}
+
+$declaredWeb = Join-Path $DappPath $conf.web
+if (-not (Test-Path -LiteralPath $declaredWeb)) {
+    throw "dapp.conf web entry not found: $($conf.web)"
+}
+
 $resolvedRelease = (Resolve-Path -LiteralPath $ReleasePath).Path
 if (Test-Path -LiteralPath $StagePath) {
     $resolvedStage = (Resolve-Path -LiteralPath $StagePath).Path
@@ -73,7 +88,6 @@ foreach ($file in $requiredFiles) {
 }
 
 Copy-Item -LiteralPath $assetsPath -Destination (Join-Path $StagePath "assets") -Recurse
-Copy-Item -LiteralPath $iconSource -Destination (Join-Path $StagePath "icon.png")
 
 if (Test-Path -LiteralPath $PackagePath) {
     Remove-Item -LiteralPath $PackagePath -Force

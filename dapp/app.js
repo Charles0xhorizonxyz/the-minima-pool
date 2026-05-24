@@ -1,4 +1,6 @@
 const USDT_TOKEN_ID = "0x7D39745FBD29049BE29850B55A18BF550E4D442F930F86266E34193D89042A90";
+const MINIMA_TOKEN_ID = "0x00";
+const LP_TOKEN_ID = null;
 
 const state = {
   minimaReserve: 513347.022587,
@@ -179,6 +181,72 @@ function formatUsd(value) {
   return `$${value.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
 }
 
+function isMdsRuntime() {
+  return typeof window.MDS !== "undefined" && new URLSearchParams(window.location.search).has("uid");
+}
+
+function parseBalanceAmount(token, preferredField = "sendable") {
+  if (!token) return 0;
+  const value = token[preferredField] ?? token.confirmed ?? token.total ?? "0";
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount > 0 ? amount : 0;
+}
+
+function findBalanceToken(tokens, tokenId, tokenName) {
+  return tokens.find((token) => {
+    const rowTokenId = String(token.tokenid || "").toLowerCase();
+    const rowToken = String(token.token || "").toLowerCase();
+    return rowTokenId === tokenId.toLowerCase() || rowToken === tokenName.toLowerCase();
+  });
+}
+
+function mdsCommand(command) {
+  return new Promise((resolve, reject) => {
+    window.MDS.cmd(command, (message) => {
+      if (!message || message.status === false) {
+        reject(message);
+        return;
+      }
+      resolve(message);
+    });
+  });
+}
+
+async function loadRealBalances() {
+  if (!isMdsRuntime()) return;
+
+  try {
+    const balanceMessage = await mdsCommand("balance");
+    const tokens = Array.isArray(balanceMessage.response) ? balanceMessage.response : [];
+    const minimaToken = findBalanceToken(tokens, MINIMA_TOKEN_ID, "Minima");
+    const usdtToken = findBalanceToken(tokens, USDT_TOKEN_ID, "USDT");
+    const lpToken = LP_TOKEN_ID ? findBalanceToken(tokens, LP_TOKEN_ID, "The Pool LP") : null;
+
+    state.balances.minima = parseBalanceAmount(minimaToken);
+    state.balances.usdt = parseBalanceAmount(usdtToken);
+    state.balances.lp = LP_TOKEN_ID ? parseBalanceAmount(lpToken) : 0;
+
+    renderBalances();
+    calculateSwapFromInput();
+    renderAddQuote();
+    renderRemoveQuote();
+    renderPositionMonitor();
+  } catch (error) {
+    console.warn("Unable to load Minima balances from MDS.", error);
+  }
+}
+
+function initialiseMdsBalances() {
+  if (!isMdsRuntime()) return;
+
+  window.MDS.init((message) => {
+    if (!message) return;
+    if (message.event === "inited" || message.event === "NEWBALANCE") {
+      loadRealBalances();
+    }
+  });
+}
+
 function swapQuote(amountIn, inputReserve, outputReserve) {
   if (amountIn <= 0) return 0;
   const amountInWithFee = amountIn * (1 - state.feeRate);
@@ -217,8 +285,8 @@ function renderBalances() {
   const isBuy = els.swapDirection.value === "buy";
   els.swapBalance.textContent = formatQuoteAmount(isBuy ? state.balances.usdt : state.balances.minima);
   els.swapOutputBalance.textContent = formatQuoteAmount(isBuy ? state.balances.minima : state.balances.usdt);
-  els.addMinimaBalance.textContent = formatQuoteAmount(state.balances.minima);
-  els.addUsdtBalance.textContent = formatQuoteAmount(state.balances.usdt);
+  els.addMinimaBalance.textContent = formatQuoteAmount(liquidityMaxAmounts().minima);
+  els.addUsdtBalance.textContent = formatQuoteAmount(liquidityMaxAmounts().usdt);
   els.removeBalance.textContent = formatQuoteAmount(state.balances.lp);
 }
 
@@ -228,6 +296,55 @@ function maxSwapOutput() {
   return isBuy
     ? swapQuote(maxInput, state.usdtReserve, state.minimaReserve)
     : swapQuote(maxInput, state.minimaReserve, state.usdtReserve);
+}
+
+function poolUsdtPerMinima() {
+  return state.minimaReserve > 0 ? state.usdtReserve / state.minimaReserve : 0;
+}
+
+function poolMinimaPerUsdt() {
+  return state.usdtReserve > 0 ? state.minimaReserve / state.usdtReserve : 0;
+}
+
+function balancedAddFromMinima() {
+  const usdtPerMinima = poolUsdtPerMinima();
+  if (usdtPerMinima <= 0) return 0;
+  return Math.min(state.balances.minima, state.balances.usdt / usdtPerMinima);
+}
+
+function balancedAddFromUsdt() {
+  const usdtPerMinima = poolUsdtPerMinima();
+  if (usdtPerMinima <= 0) return 0;
+  return Math.min(state.balances.usdt, state.balances.minima * usdtPerMinima);
+}
+
+function liquidityMaxAmounts() {
+  const usdtPerMinima = poolUsdtPerMinima();
+  if (usdtPerMinima <= 0) {
+    return { minima: 0, usdt: 0 };
+  }
+
+  const minimaValue = state.balances.minima * usdtPerMinima;
+  const usdtValue = state.balances.usdt;
+
+  if (minimaValue > usdtValue) {
+    return {
+      minima: balancedAddFromMinima(),
+      usdt: state.balances.usdt
+    };
+  }
+
+  if (usdtValue > minimaValue) {
+    return {
+      minima: state.balances.minima,
+      usdt: balancedAddFromUsdt()
+    };
+  }
+
+  return {
+    minima: state.balances.minima,
+    usdt: state.balances.usdt
+  };
 }
 
 function renderSwapQuote() {
@@ -374,14 +491,14 @@ function renderAddQuote() {
 
 function calculateLiquidityFromMinima() {
   const minima = asNumber(els.addMinima.value);
-  const usdt = minima > 0 ? minima * (state.usdtReserve / state.minimaReserve) : 0;
+  const usdt = minima > 0 ? minima * poolUsdtPerMinima() : 0;
   els.addUsdt.value = usdt > 0 ? formatInputAmount(usdt) : "";
   renderAddQuote();
 }
 
 function calculateLiquidityFromUsdt() {
   const usdt = asNumber(els.addUsdt.value);
-  const minima = usdt > 0 ? usdt * (state.minimaReserve / state.usdtReserve) : 0;
+  const minima = usdt > 0 ? usdt * poolMinimaPerUsdt() : 0;
   els.addMinima.value = minima > 0 ? formatInputAmount(minima) : "";
   renderAddQuote();
 }
@@ -662,7 +779,8 @@ els.swapMax.addEventListener("click", () => {
 });
 
 els.swapOutputMax.addEventListener("click", () => {
-  els.swapOutput.value = formatInputAmount(maxSwapOutput());
+  const isBuy = els.swapDirection.value === "buy";
+  els.swapOutput.value = formatInputAmount(isBuy ? state.balances.minima : state.balances.usdt);
   calculateSwapFromOutput();
 });
 
@@ -758,6 +876,11 @@ document.querySelector("#addLiquidityForm").addEventListener("submit", (event) =
 
   if (minima <= 0 || usdt <= 0) {
     setResult(els.liquidityResult, "Enter both MINIMA and USDT amounts.");
+    return;
+  }
+
+  if (minima > state.balances.minima || usdt > state.balances.usdt) {
+    setResult(els.liquidityResult, "Insufficient balance for this liquidity ratio.");
     return;
   }
 
@@ -867,12 +990,12 @@ els.addUsdt.addEventListener("input", calculateLiquidityFromUsdt);
 els.removeLp.addEventListener("input", renderRemoveQuote);
 
 els.addMinimaMax.addEventListener("click", () => {
-  els.addMinima.value = formatInputAmount(state.balances.minima);
+  els.addMinima.value = formatInputAmount(liquidityMaxAmounts().minima);
   calculateLiquidityFromMinima();
 });
 
 els.addUsdtMax.addEventListener("click", () => {
-  els.addUsdt.value = formatInputAmount(state.balances.usdt);
+  els.addUsdt.value = formatInputAmount(liquidityMaxAmounts().usdt);
   calculateLiquidityFromUsdt();
 });
 
@@ -911,3 +1034,4 @@ renderRemoveQuote();
 renderTrades();
 renderPositionMonitor();
 renderLiquidityAnalytics();
+initialiseMdsBalances();

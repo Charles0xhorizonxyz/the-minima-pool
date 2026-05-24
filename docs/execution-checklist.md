@@ -59,7 +59,7 @@ Priority order:
 
 ### Frontend Later
 
-- [ ] Connect to local Minima MDS
+- [x] Connect prototype to local Minima MDS for real MINIMA and verified USDT balances
 - [ ] Read wallet balances
 - [ ] Read pool reserves
 - [ ] Quote swap from live reserves

@@ -6,6 +6,12 @@ The Pool MiniDAPP should run locally through the Minima MiniDAPP system. It must
 
 Current files provide a basic one-page prototype UI only. It does not construct or submit real Minima transactions yet.
 
+The MiniDAPP package includes a root `favicon.ico` generated from The Pool logo. Minima's MiniDAPP install flow uses the root favicon for the installed-app icon.
+
+The `dapp.conf` file declares `icon: "pool_icon.png"` and `web: "index.html"`, matching the working convention used by the Stables MiniDAPP package.
+
+When installed inside MiniHub/MDS, the prototype reads real local node balances with `MDS.cmd("balance")` and uses the `sendable` amount for MINIMA and the verified USDT token ID. Local browser preview keeps the static prototype balances as a fallback.
+
 The MiniDAPP should eventually include:
 
 - Pool overview

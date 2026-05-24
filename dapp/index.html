@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Pool</title>
+    <link rel="icon" href="pool_icon.png" type="image/png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css?v=20260524-mobile-5">
   </head>
@@ -72,26 +73,6 @@
 
           <div class="swap-toolbar">
             <h2>Swap</h2>
-            <details class="swap-settings">
-              <summary aria-label="Swap settings">
-                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                  <path d="M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z" />
-                  <path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.04.04a2.1 2.1 0 0 1-2.97 2.97l-.04-.04a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.66V21.3a2.1 2.1 0 0 1-4.2 0v-.05a1.8 1.8 0 0 0-1.1-1.66 1.8 1.8 0 0 0-1.98.36l-.04.04a2.1 2.1 0 0 1-2.97-2.97l.04-.04A1.8 1.8 0 0 0 3.8 15a1.8 1.8 0 0 0-1.66-1.1H2.1a2.1 2.1 0 0 1 0-4.2h.05A1.8 1.8 0 0 0 3.8 8.6a1.8 1.8 0 0 0-.36-1.98l-.04-.04a2.1 2.1 0 0 1 2.97-2.97l.04.04a1.8 1.8 0 0 0 1.98.36 1.8 1.8 0 0 0 1.1-1.66V2.1a2.1 2.1 0 0 1 4.2 0v.05a1.8 1.8 0 0 0 1.1 1.66 1.8 1.8 0 0 0 1.98-.36l.04-.04a2.1 2.1 0 0 1 2.97 2.97l-.04.04A1.8 1.8 0 0 0 19.4 8.6a1.8 1.8 0 0 0 1.66 1.1h.05a2.1 2.1 0 0 1 0 4.2h-.05A1.8 1.8 0 0 0 19.4 15z" />
-                </svg>
-              </summary>
-              <div class="settings-popover">
-                <span>Slippage tolerance</span>
-                <div class="slippage-options" aria-label="Slippage tolerance">
-                  <button class="slippage-option is-active" type="button" data-slippage="0.005">0.5%</button>
-                  <button class="slippage-option" type="button" data-slippage="0.01">1%</button>
-                  <button class="slippage-option" type="button" data-slippage="0.02">2%</button>
-                </div>
-                <label class="custom-slippage">
-                  Custom %
-                  <input id="customSlippage" type="number" min="0.01" max="50" step="0.01" placeholder="0.50">
-                </label>
-              </div>
-            </details>
           </div>
 
           <div class="swap-card">
@@ -125,7 +106,32 @@
           </div>
 
           <div class="quote">
-            <span>Minimum received <small id="slippageLabel">0.5% slippage</small></span>
+            <span>
+              Minimum received
+              <small class="slippage-inline">
+                <span id="slippageLabel">0.5% slippage</span>
+                <details class="swap-settings">
+                  <summary aria-label="Edit slippage tolerance" title="Edit slippage tolerance">
+                    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                    </svg>
+                  </summary>
+                  <div class="settings-popover">
+                    <span>Slippage tolerance</span>
+                    <div class="slippage-options" aria-label="Slippage tolerance">
+                      <button class="slippage-option is-active" type="button" data-slippage="0.005">0.5%</button>
+                      <button class="slippage-option" type="button" data-slippage="0.01">1%</button>
+                      <button class="slippage-option" type="button" data-slippage="0.02">2%</button>
+                    </div>
+                    <label class="custom-slippage">
+                      Custom %
+                      <input id="customSlippage" type="number" min="0.01" max="50" step="0.01" placeholder="0.50">
+                    </label>
+                  </div>
+                </details>
+              </small>
+            </span>
             <strong id="minOutput">0</strong>
           </div>
 
@@ -583,6 +589,7 @@
       </div>
     </div>
 
-    <script src="app.js?v=20260524-mobile-5"></script>
+    <script src="mds-2.1.0.js"></script>
+    <script src="app.js?v=20260524-real-balances-1"></script>
   </body>
 </html>
