@@ -6,6 +6,24 @@ The Pool MiniDAPP should run locally through the Minima MiniDAPP system. It must
 
 Current files provide a basic one-page prototype UI only. It does not construct or submit real Minima transactions yet.
 
+Latest installable MiniDAPP package:
+
+```text
+../releases/latest/the-pool-0.0.1-beta.mds.zip
+```
+
+Direct GitHub download:
+
+```text
+https://raw.githubusercontent.com/Charles0xhorizonxyz/the-minima-pool/main/releases/latest/the-pool-0.0.1-beta.mds.zip
+```
+
+SHA256:
+
+```text
+0902D5266F4CE2B50FE40CE503109274A406A665B5A6D10B2187C5DC9EA756F3
+```
+
 The MiniDAPP package includes a root `favicon.ico` generated from The Pool logo. Minima's MiniDAPP install flow uses the root favicon for the installed-app icon.
 
 The `dapp.conf` file declares `icon: "pool_icon.png"` and `web: "index.html"`, matching the working convention used by the Stables MiniDAPP package.

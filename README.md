@@ -37,6 +37,24 @@ Current status:
 - Production smart contract code has not been written
 - No real-fund pool has been launched
 
+Latest MiniDAPP package:
+
+```text
+releases/latest/the-pool-0.0.1-beta.mds.zip
+```
+
+Direct download:
+
+```text
+https://raw.githubusercontent.com/Charles0xhorizonxyz/the-minima-pool/main/releases/latest/the-pool-0.0.1-beta.mds.zip
+```
+
+SHA256:
+
+```text
+0902D5266F4CE2B50FE40CE503109274A406A665B5A6D10B2187C5DC9EA756F3
+```
+
 Technical review entry point:
 
 ```text
