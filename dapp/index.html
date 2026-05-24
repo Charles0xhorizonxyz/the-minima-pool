@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Pool</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css?v=20260524-mobile-5">
+  </head>
+  <body>
+    <div class="scene" aria-hidden="true">
+      <div class="horizon"></div>
+      <div class="water"></div>
+    </div>
+
+    <main class="app">
+      <header class="topline">
+        <div class="brand">
+          <span class="logo" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+              <path d="M16 20h32" />
+              <path d="M22 20v28" />
+              <path d="M42 20v28" />
+              <path d="M22 30h20" />
+              <path d="M22 40h20" />
+              <path class="wave" d="M10 51c5 3 9 3 14 0s9-3 14 0 10 3 16 0" />
+            </svg>
+          </span>
+          <div>
+            <h1>The Pool</h1>
+            <p>Minima's splash</p>
+          </div>
+        </div>
+        <span class="version" tabindex="0" aria-describedby="versionTooltip">
+          v0.0.1 beta
+          <span class="version-tooltip" id="versionTooltip" role="tooltip">
+            Prototype beta: interface and local testing stage. Upcoming stages include Minima transaction building, contract integration, local-node validation, and public release packages. Check GitHub frequently to make sure you are using the latest version.
+          </span>
+        </span>
+        <nav class="project-links" aria-label="Project links">
+          <a class="bridge-link" href="https://mxusd.global/" target="_blank" rel="noreferrer" aria-label="USDT bridge" title="Bridge your USDT to Minima">
+            <svg class="icon-tabler" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path d="M6 7h12a2 2 0 0 1 2 2v9a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-2a4 4 0 0 0 -8 0v2a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-9a2 2 0 0 1 2 -2" />
+            </svg>
+          </a>
+          <a href="https://github.com/Charles0xhorizonxyz/the-minima-pool" target="_blank" rel="noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.95 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.53.12-3.19 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 0 1 6.02 0c2.29-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.89.12 3.19.77.84 1.23 1.92 1.23 3.23 0 4.62-2.81 5.63-5.49 5.93.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/>
+            </svg>
+          </a>
+          <a href="https://x.com/theminimapool" target="_blank" rel="noreferrer" aria-label="X">
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path d="M18.9 2h3.68l-8.04 9.18L24 22h-7.41l-5.8-7.58L4.16 22H.47l8.6-9.83L0 2h7.59l5.24 6.93L18.9 2zm-1.29 18.1h2.04L6.48 3.8H4.29L17.61 20.1z"/>
+            </svg>
+          </a>
+          <a class="telegram-link" href="https://t.me/theminimapool" target="_blank" rel="noreferrer" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path d="M22.05 2.28c.32-.13.66.15.57.49l-3.35 17.95c-.08.43-.58.62-.93.35l-5.18-3.82-2.64 2.55c-.29.28-.78.14-.88-.25l-1.04-4.07-4.98-1.55c-.47-.15-.5-.8-.05-.99L22.05 2.28zm-4.04 5.04-8.07 7.27.78 3.05 1.7-1.64c.22-.21.56-.24.81-.06l3.85 2.84 2.34-12.5-12.6 7.33 2.42.75 8.77-7.04z"/>
+            </svg>
+          </a>
+        </nav>
+      </header>
+
+      <section class="tabs" aria-label="Pool actions">
+        <button class="tab is-active" type="button" data-tab="swap">Swap</button>
+        <button class="tab" type="button" data-tab="liquidity">Liquidity</button>
+      </section>
+
+      <section class="panel is-active" id="swapPanel">
+        <form id="swapForm">
+          <input id="swapDirection" type="hidden" value="buy">
+
+          <div class="swap-toolbar">
+            <h2>Swap</h2>
+            <details class="swap-settings">
+              <summary aria-label="Swap settings">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z" />
+                  <path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.04.04a2.1 2.1 0 0 1-2.97 2.97l-.04-.04a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.66V21.3a2.1 2.1 0 0 1-4.2 0v-.05a1.8 1.8 0 0 0-1.1-1.66 1.8 1.8 0 0 0-1.98.36l-.04.04a2.1 2.1 0 0 1-2.97-2.97l.04-.04A1.8 1.8 0 0 0 3.8 15a1.8 1.8 0 0 0-1.66-1.1H2.1a2.1 2.1 0 0 1 0-4.2h.05A1.8 1.8 0 0 0 3.8 8.6a1.8 1.8 0 0 0-.36-1.98l-.04-.04a2.1 2.1 0 0 1 2.97-2.97l.04.04a1.8 1.8 0 0 0 1.98.36 1.8 1.8 0 0 0 1.1-1.66V2.1a2.1 2.1 0 0 1 4.2 0v.05a1.8 1.8 0 0 0 1.1 1.66 1.8 1.8 0 0 0 1.98-.36l.04-.04a2.1 2.1 0 0 1 2.97 2.97l-.04.04A1.8 1.8 0 0 0 19.4 8.6a1.8 1.8 0 0 0 1.66 1.1h.05a2.1 2.1 0 0 1 0 4.2h-.05A1.8 1.8 0 0 0 19.4 15z" />
+                </svg>
+              </summary>
+              <div class="settings-popover">
+                <span>Slippage tolerance</span>
+                <div class="slippage-options" aria-label="Slippage tolerance">
+                  <button class="slippage-option is-active" type="button" data-slippage="0.005">0.5%</button>
+                  <button class="slippage-option" type="button" data-slippage="0.01">1%</button>
+                  <button class="slippage-option" type="button" data-slippage="0.02">2%</button>
+                </div>
+                <label class="custom-slippage">
+                  Custom %
+                  <input id="customSlippage" type="number" min="0.01" max="50" step="0.01" placeholder="0.50">
+                </label>
+              </div>
+            </details>
+          </div>
+
+          <div class="swap-card">
+            <div class="card-head">
+              <span>From</span>
+              <button class="max-button" id="swapMax" type="button">Max <span id="swapBalance">0.00</span></button>
+            </div>
+            <div class="asset-row">
+              <div class="asset">
+                <span class="token-icon"><img id="fromIcon" src="assets/USDT.svg" alt=""></span>
+                <strong id="fromToken">USDT</strong>
+              </div>
+              <input id="swapAmount" type="number" min="0" step="0.000001" placeholder="0.00" aria-label="Swap input amount">
+            </div>
+          </div>
+
+          <button class="switch" id="switchDirection" type="button" aria-label="Switch swap direction">↓</button>
+
+          <div class="swap-card">
+            <div class="card-head">
+              <span>To</span>
+              <button class="max-button" id="swapOutputMax" type="button">Max <span id="swapOutputBalance">0.00</span></button>
+            </div>
+            <div class="asset-row">
+              <div class="asset">
+                <span class="token-icon minima-icon"><img id="toIcon" src="assets/MINIMA.svg" alt=""></span>
+                <strong id="toToken">MINIMA</strong>
+              </div>
+              <input id="swapOutput" type="number" min="0" step="0.000001" placeholder="0.00" aria-label="Swap output amount">
+            </div>
+          </div>
+
+          <div class="quote">
+            <span>Minimum received <small id="slippageLabel">0.5% slippage</small></span>
+            <strong id="minOutput">0</strong>
+          </div>
+
+          <div class="quote">
+            <span>USDT / MINIMA</span>
+            <strong id="priceUsdtPerMinima">0.009740</strong>
+          </div>
+
+          <div class="quote">
+            <span>MINIMA / USDT</span>
+            <strong id="priceMinimaPerUsdt">102.669405</strong>
+          </div>
+
+          <div class="quote">
+            <span>Price impact</span>
+            <strong id="priceImpact">0.00%</strong>
+          </div>
+
+          <details class="impact-info" id="impactInfo">
+            <summary>Know more</summary>
+            <p>
+              Price impact is the difference between the current pool price and the average price you will receive by accepting the current conditions.
+              Larger swaps move the pool more, so the final execution price gets worse. This estimate isolates pool-depth loss and does not include the 1% fee.
+            </p>
+            <div>
+              <span>Estimated loss from price impact</span>
+              <strong id="impactLoss">0.00 USDT</strong>
+            </div>
+          </details>
+
+          <div class="quote">
+            <span>Fee</span>
+            <strong>1%</strong>
+          </div>
+
+          <details class="fee-info">
+            <summary>Where the fee goes</summary>
+            <p>
+              The 1% swap fee stays inside the pool reserves. There is no fee wallet, treasury, or manual claim address.
+            </p>
+            <p>
+              All swap fees are handed to liquidity providers through the pool itself: the fees remain in reserves and increase the value behind LP tokens. This compensates LPs for locking their assets, making them available to traders, and bearing price movement and impermanent loss risk.
+            </p>
+          </details>
+
+          <label class="risk-ack" id="riskAckWrap" hidden>
+            <input id="riskAck" type="checkbox">
+            <span>I understand this swap has high price impact and may be detrimental to me.</span>
+          </label>
+
+          <button class="primary" id="previewSwap" type="submit">Preview swap</button>
+          <output class="result" id="swapResult" aria-live="polite"></output>
+
+          <section class="swap-stats" aria-label="Pool stats">
+            <div>
+              <span>MINIMA liquidity</span>
+              <strong id="minimaReserve">513,347</strong>
+            </div>
+            <div>
+              <span>USDT liquidity</span>
+              <strong id="usdtReserve">5,000</strong>
+            </div>
+            <div>
+              <span>Mid price</span>
+              <strong id="midPrice">0.00974</strong>
+            </div>
+            <div>
+              <span>+/-2% liquidity</span>
+              <strong id="bandLiquidity">0</strong>
+            </div>
+          </section>
+        </form>
+
+        <section class="history" aria-label="Historical trades">
+          <div class="history-head">
+            <h2>Historical trades</h2>
+            <div class="history-filter" aria-label="Trade history filter">
+              <button class="history-filter-button is-active" type="button" data-history="mine">My trades</button>
+              <button class="history-filter-button" type="button" data-history="all">All trades</button>
+            </div>
+          </div>
+          <div id="tradeList"></div>
+        </section>
+      </section>
+
+      <section class="panel" id="liquidityPanel">
+        <div class="liquidity-mode" aria-label="Liquidity mode">
+          <button class="liquidity-mode-button is-active" type="button" data-liquidity-mode="add">Add</button>
+          <button class="liquidity-mode-button" type="button" data-liquidity-mode="remove">Remove</button>
+        </div>
+
+        <form id="addLiquidityForm">
+          <div class="swap-card">
+            <div class="card-head">
+              <span>Deposit</span>
+              <button class="max-button" id="addMinimaMax" type="button">Max <span id="addMinimaBalance">0.00</span></button>
+            </div>
+            <div class="asset-row">
+              <div class="asset">
+                <span class="token-icon minima-icon"><img src="assets/MINIMA.svg" alt=""></span>
+                <strong>MINIMA</strong>
+              </div>
+              <input id="addMinima" type="number" min="0" step="0.000001" placeholder="0.00" aria-label="MINIMA liquidity amount">
+            </div>
+          </div>
+
+          <div class="pair-plus" aria-hidden="true">+</div>
+
+          <div class="swap-card">
+            <div class="card-head">
+              <span>Deposit</span>
+              <button class="max-button" id="addUsdtMax" type="button">Max <span id="addUsdtBalance">0.00</span></button>
+            </div>
+            <div class="asset-row">
+              <div class="asset">
+                <span class="token-icon"><img src="assets/USDT.svg" alt=""></span>
+                <strong>USDT</strong>
+              </div>
+              <input id="addUsdt" type="number" min="0" step="0.000001" placeholder="0.00" aria-label="USDT liquidity amount">
+            </div>
+          </div>
+
+          <div class="quote">
+            <span>Estimated pool share</span>
+            <strong id="addShare">0.00%</strong>
+          </div>
+
+          <details class="liquidity-risk">
+            <summary>Impermanent loss warning, please read before investing</summary>
+            <p>
+              When you provide liquidity, your position is continuously rebalanced between MINIMA and USDT. If MINIMA moves strongly, you may end up with less value than if you had simply held both tokens outside the pool.
+            </p>
+            <div>
+              <span>If MINIMA price drops 50%</span>
+              <strong>~5.72% less than holding</strong>
+            </div>
+            <div>
+              <span>If MINIMA price drops 80%</span>
+              <strong>~25.46% less than holding</strong>
+            </div>
+            <div>
+              <span>If MINIMA price doubles</span>
+              <strong>~5.72% less than holding</strong>
+            </div>
+            <div>
+              <span>If MINIMA price moves 5x</span>
+              <strong>~25.46% less than holding</strong>
+            </div>
+            <p>
+              The goal of providing liquidity is for earned swap fees to become larger than impermanent loss, volatility risk, and the opportunity cost of not simply holding the tokens outside the pool. Providing liquidity for a short period has a higher probability of ending in a loss, because fees may not have enough time to offset losses caused by price movement.
+            </p>
+            <p>
+              The best scenario for a liquidity provider is high swap volume, meaningful fee generation, and a relatively stable asset price over a long period. The worst scenario is high asset volatility with light swap volume, where impermanent loss can exceed the income earned from user transaction fees.
+            </p>
+            <p>
+              Read about impermanent loss before adding liquidity. Asking an AI to explain it with your own numbers can help, and this article is a useful starting point:
+              <a href="https://medium.com/@maroos/what-i-wish-someone-had-told-me-about-impermanent-loss-before-i-experienced-it-bba365987dc7" target="_blank" rel="noreferrer">What I Wish Someone Had Told Me About Impermanent Loss Before I Experienced It</a>.
+            </p>
+          </details>
+
+          <button class="primary" type="submit">Preview add</button>
+          <output class="result" id="liquidityResult" aria-live="polite"></output>
+        </form>
+
+        <form id="removeLiquidityForm" hidden>
+          <div class="swap-card">
+            <div class="card-head">
+              <span>Withdraw</span>
+              <button class="max-button" id="removeMax" type="button">Max <span id="removeBalance">0.00</span></button>
+            </div>
+            <div class="asset-row">
+              <div class="asset">
+                <span class="token-icon logo-token" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" focusable="false">
+                    <path d="M16 20h32" />
+                    <path d="M22 20v28" />
+                    <path d="M42 20v28" />
+                    <path d="M22 30h20" />
+                    <path d="M22 40h20" />
+                    <path class="wave" d="M10 51c5 3 9 3 14 0s9-3 14 0 10 3 16 0" />
+                  </svg>
+                </span>
+                <strong>LP</strong>
+              </div>
+              <input id="removeLp" type="number" min="0" step="0.000001" placeholder="0.00" aria-label="LP token amount to remove">
+            </div>
+          </div>
+
+          <div class="quote">
+            <span>You receive MINIMA</span>
+            <strong id="removeMinimaOut">0.00</strong>
+          </div>
+
+          <div class="quote">
+            <span>You receive USDT</span>
+            <strong id="removeUsdtOut">0.00</strong>
+          </div>
+
+          <div class="quote">
+            <span>Remaining LP balance</span>
+            <strong id="removeRemaining">0.00</strong>
+          </div>
+
+          <button class="primary" type="submit">Preview remove</button>
+          <output class="result" id="removeResult" aria-live="polite"></output>
+        </form>
+
+        <section class="position-monitor" aria-label="My liquidity position">
+          <div class="analytics-head">
+            <h2>My position</h2>
+            <span>Prototype data</span>
+          </div>
+
+          <h3 class="position-group-title">Ownership</h3>
+          <div class="position-grid position-grid-ownership">
+            <div>
+              <span>Pool held</span>
+              <strong id="positionPoolShare">0.00%</strong>
+            </div>
+            <div>
+              <span>Weighted voting power</span>
+              <strong id="positionVotingPower">0.00%</strong>
+            </div>
+            <div>
+              <span>Days in pool</span>
+              <strong id="positionDays">0</strong>
+            </div>
+          </div>
+
+          <h3 class="position-group-title">Performance</h3>
+          <div class="position-grid position-grid-performance">
+            <div>
+              <span>Current value</span>
+              <strong id="positionValue">$0</strong>
+            </div>
+            <div>
+              <span>Value change</span>
+              <strong id="positionValueChange">$0</strong>
+            </div>
+            <div>
+              <span>Impermanent loss</span>
+              <strong id="positionImpermanentLoss">$0</strong>
+            </div>
+            <div>
+              <span>Fees earned</span>
+              <strong id="positionFeesEarned">$0</strong>
+            </div>
+            <div>
+              <span>Net return</span>
+              <strong id="positionReturn">0.00%</strong>
+            </div>
+            <div>
+              <span>Annualized return</span>
+              <strong id="positionAnnualizedReturn">0.00%</strong>
+            </div>
+          </div>
+
+          <p class="position-disclaimer">
+            These numbers are indicative only. Realized gain or loss can vary due to liquidity depth, price movement, transaction fees, execution price, and costs when closing the position.
+          </p>
+        </section>
+
+        <section class="fee-governance" aria-label="Fee governance">
+          <div class="analytics-head">
+            <h2>Fee vote</h2>
+            <span>LP governance</span>
+          </div>
+
+          <div class="governance-grid">
+            <div>
+              <span>Current fee</span>
+              <strong id="governanceCurrentFee">1.00%</strong>
+            </div>
+            <div>
+              <span>Next vote</span>
+              <strong>Every 3 months</strong>
+            </div>
+            <div>
+              <span>Your voting power</span>
+              <strong id="governanceVotingPower">0.00%</strong>
+            </div>
+          </div>
+
+          <p class="governance-note">
+            LP holders vote on the swap fee once per quarter. The vote stays open for 72 hours, and LP tokens used to vote are frozen until the voting period ends. The fee can only move by 0.25% per vote, up or down. Voting power is based on pool percentage held and weighted by how long the LP position has been active.
+          </p>
+
+          <div class="fee-vote-control" aria-label="Cast fee vote">
+            <label>
+              <input type="radio" name="feeVote" value="-0.25">
+              <span>Lower fee<br><strong>-0.25%</strong></span>
+            </label>
+            <label>
+              <input type="radio" name="feeVote" value="0" checked>
+              <span>No change<br><strong>0.00%</strong></span>
+            </label>
+            <label>
+              <input type="radio" name="feeVote" value="0.25">
+              <span>Raise fee<br><strong>+0.25%</strong></span>
+            </label>
+          </div>
+
+          <button class="primary vote-button" id="castVote" type="button">Cast my vote</button>
+          <output class="result" id="voteResult" aria-live="polite"></output>
+        </section>
+
+        <section class="liquidity-analytics" aria-label="Liquidity analytics">
+          <div class="analytics-head">
+            <h2>Liquidity analytics</h2>
+            <span>Prototype data</span>
+          </div>
+
+          <div class="analytics-charts">
+            <figure class="chart-card">
+              <figcaption>Transactions</figcaption>
+              <svg class="analytics-chart" id="transactionsChart" viewBox="0 0 560 220" role="img" aria-label="Daily transaction count time series"></svg>
+            </figure>
+            <figure class="chart-card">
+              <figcaption>Fees</figcaption>
+              <svg class="analytics-chart" id="feesChart" viewBox="0 0 560 220" role="img" aria-label="Daily fee time series"></svg>
+            </figure>
+          </div>
+
+          <div class="analytics-grid">
+            <div>
+              <span>Daily volume</span>
+              <strong id="dailyVolume">$0</strong>
+            </div>
+            <div>
+              <span>Daily fees</span>
+              <strong id="dailyFees">$0</strong>
+            </div>
+            <div>
+              <span>Daily APR</span>
+              <strong id="dailyApr">0.00%</strong>
+            </div>
+            <div>
+              <span>Cumulative volume</span>
+              <strong id="cumulativeVolume">$0</strong>
+            </div>
+            <div>
+              <span>Cumulative fees</span>
+              <strong id="cumulativeFees">$0</strong>
+            </div>
+            <div>
+              <span>Cumulative return</span>
+              <strong id="cumulativeReturn">0.00%</strong>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div class="modal" id="swapModal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="swapModalTitle">
+        <h2 id="swapModalTitle">Confirm swap</h2>
+        <div class="modal-summary">
+          <div>
+            <span>From</span>
+            <strong id="confirmFrom">0.00</strong>
+          </div>
+          <div>
+            <span>To</span>
+            <strong id="confirmTo">0.00</strong>
+          </div>
+          <div>
+            <span>Minimum received</span>
+            <strong id="confirmMinimum">0.00</strong>
+          </div>
+          <div>
+            <span>USDT / MINIMA</span>
+            <strong id="confirmPriceUsdtPerMinima">0.00</strong>
+          </div>
+          <div>
+            <span>MINIMA / USDT</span>
+            <strong id="confirmPriceMinimaPerUsdt">0.00</strong>
+          </div>
+          <div>
+            <span>Price impact</span>
+            <strong id="confirmPriceImpact">0.00%</strong>
+          </div>
+          <div class="impact-meter" id="confirmImpactMeter" aria-label="Price impact severity">
+            <span id="confirmImpactLabel">Low impact</span>
+            <strong id="confirmImpactLoss">0.00 USDT</strong>
+          </div>
+          <div>
+            <span>Fee</span>
+            <strong>1%</strong>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary" id="cancelSwap" type="button">Cancel</button>
+          <button class="primary" id="confirmSwap" type="button">Confirm swap</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="liquidityModal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="liquidityModalTitle">
+        <h2 id="liquidityModalTitle">Confirm add</h2>
+        <div class="modal-summary">
+          <div>
+            <span>MINIMA deposit</span>
+            <strong id="confirmAddMinima">0.00 MINIMA</strong>
+          </div>
+          <div>
+            <span>USDT deposit</span>
+            <strong id="confirmAddUsdt">0.00 USDT</strong>
+          </div>
+          <div>
+            <span>Pool share</span>
+            <strong id="confirmAddShare">0.00%</strong>
+          </div>
+          <div>
+            <span>Pool ratio</span>
+            <strong id="confirmAddRatio">0.00974 USDT / MINIMA</strong>
+          </div>
+          <div class="impact-meter liquidity-meter" aria-label="Impermanent loss reminder">
+            <span>Impermanent loss risk</span>
+            <strong>MINIMA volatility can make this position worth less than holding unless earned fees overcome the loss.</strong>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary" id="cancelAdd" type="button">Cancel</button>
+          <button class="primary" id="confirmAdd" type="button">Confirm add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="removeModal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="removeModalTitle">
+        <h2 id="removeModalTitle">Confirm remove</h2>
+        <div class="modal-summary">
+          <div>
+            <span>LP burned</span>
+            <strong id="confirmRemoveLp">0.00 LP</strong>
+          </div>
+          <div>
+            <span>MINIMA received</span>
+            <strong id="confirmRemoveMinima">0.00 MINIMA</strong>
+          </div>
+          <div>
+            <span>USDT received</span>
+            <strong id="confirmRemoveUsdt">0.00 USDT</strong>
+          </div>
+          <div>
+            <span>Remaining LP</span>
+            <strong id="confirmRemoveRemaining">0.00 LP</strong>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary" id="cancelRemove" type="button">Cancel</button>
+          <button class="primary" id="confirmRemove" type="button">Confirm remove</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js?v=20260524-mobile-5"></script>
+  </body>
+</html>
