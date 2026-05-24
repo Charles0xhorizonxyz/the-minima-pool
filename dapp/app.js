@@ -142,6 +142,21 @@ const els = {
   confirmRemove: document.querySelector("#confirmRemove")
 };
 
+document.querySelectorAll("[data-telegram-app]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const appUrl = link.dataset.telegramApp;
+    const webUrl = link.dataset.telegramWeb || link.href;
+
+    if (!appUrl) return;
+
+    event.preventDefault();
+    window.location.href = appUrl;
+    window.setTimeout(() => {
+      window.open(webUrl, "_blank", "noopener,noreferrer");
+    }, 600);
+  });
+});
+
 function asNumber(value) {
   const number = Number(value);
   return Number.isFinite(number) && number > 0 ? number : 0;
