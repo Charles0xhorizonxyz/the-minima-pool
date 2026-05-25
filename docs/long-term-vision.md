@@ -44,6 +44,8 @@ V1 can reserve fee-governance fields and, if script limits allow, include fee-on
 
 V1 should not include concentrated liquidity, routing, lending, public market-maker deposits, or sharding.
 
+V1 Maximize integration should remain out of scope. The V1 LP token should first prove reliable for add/remove liquidity and fee ownership before it is used in any managed strategy.
+
 ## V2: Multi-Pair And Operational Maturity
 
 V2 can expand from one pool to multiple simple full-range pools.
@@ -53,6 +55,7 @@ Possible additions:
 - Additional pairs beyond MINIMA / USDT
 - Separate pool script/address per pair
 - Separate LP token per pool
+- LP token value display and circulating-supply analytics
 - Event indexer implementation
 - Portfolio and LP analytics
 - Keeper bot specification
@@ -110,6 +113,21 @@ If lending is built, it should have its own:
 
 It can integrate with pool prices or LP assets only after the AMM has proven stable.
 
+## Maximize Managed Strategy
+
+A Maximize integration can be considered after the base AMM is stable, but it is not a simple extension of the pool.
+
+A managed strategy creates new questions:
+
+- who or what holds the LP tokens or underlying assets
+- whether strategy positions can still vote
+- how users exit during volatile markets
+- whether an external protocol adds custody, oracle, strategy, or liquidation risk
+- how rewards are funded
+- how the UI separates pool fees from external strategy yield
+
+Any Maximize integration should be opt-in and separately reviewed. The base AMM should not depend on it and should not route LP tokens or reserves into external yield by default.
+
 ## What Can Stay On The Same Pool
 
 Likely same-pool compatible if included in the V1 script:
@@ -135,6 +153,7 @@ Likely new script/address:
 - Multi-pool routing
 - Batch/intents settlement
 - Lending protocol
+- Maximize managed-strategy integration
 - L2 or managed-vault design
 
 ## Review Gates

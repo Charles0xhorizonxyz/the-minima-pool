@@ -6,6 +6,11 @@ Do not add production smart contract code during Phase 0.
 
 The next contract-related step should be a test-token prototype before a capped real-fund trial.
 
+Current design documents:
+
+- `design/pool-state-transaction-model.md`
+- `design/minima-command-research.md`
+
 Future contract logic must enforce:
 
 - Verified USDT token ID matching

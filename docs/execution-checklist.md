@@ -42,13 +42,14 @@ Priority order:
 
 - [x] Finalize exact Minima official icon asset
 - [x] Confirm USDT icon licensing/source
-- [x] Add mobile QA pass later, before packaging or public release
-- [x] Add desktop QA pass later, before packaging or public release
+- [x] Add mobile QA pass before public review package
+- [x] Add desktop QA pass before public review package
 - [x] Verify no text overlap at narrow widths
 - [x] Confirm header links fit on supported desktop sizes
 - [x] Confirm social links are hidden or usable on mobile
 - [ ] Replace prototype trade data with local mock-state module
 - [ ] Replace prototype liquidity analytics with local mock-state module
+- [ ] Keep mock data isolated from real pool state and wallet state
 - [ ] Add compact staged-development note in a minimal UI location
 - [ ] Add wallet connection/local-node status indicator
 - [ ] Verify transaction pending / success / failure states against real MDS behavior
@@ -56,11 +57,12 @@ Priority order:
 - [x] Add MiniDAPP packaging validation for `dapp.conf`
 - [x] Package current MiniDAPP into `2_development/releases/latest/`
 - [x] Confirm Minima MiniDAPP required files and permissions against official docs
+- [ ] Re-check official MiniDAPP package requirements before contract-backed beta
 
 ### Frontend Later
 
 - [x] Connect prototype to local Minima MDS for real MINIMA and verified USDT balances
-- [ ] Read wallet balances
+- [x] Read wallet balances for MINIMA and verified USDT
 - [ ] Read pool reserves
 - [ ] Quote swap from live reserves
 - [ ] Preview transaction details
@@ -104,6 +106,7 @@ https://t.me/theminimapool
 - [x] Add matching branding and icon
 - [ ] Confirm public materials describe what The Pool is
 - [ ] Confirm links from dapp open correctly
+- [ ] Publish security review / white-hat review scope before real-fund launch
 
 ## 3. Repository Hygiene
 
@@ -149,13 +152,48 @@ https://github.com/Charles0xhorizonxyz/the-minima-pool
 - [x] Implement LP share accounting
 - [x] Implement minimum-output checks
 - [x] Implement fake USDT rejection
+- [x] Test wrong USDT token rejection
+- [x] Test LP token accounting
+- [x] Test over-balance / invalid input behavior in UI prototype
 - [x] Add unit tests
 
 ### Minima Transaction Model
 
 - [ ] Verify current official Minima docs
-- [ ] Verify local Minima node behavior
+- [x] Verify local Minima node behavior
 - [x] Consolidate UTXO management reference document
+- [x] Create `contracts/design/pool-state-transaction-model.md`
+- [x] Create `contracts/design/minima-command-research.md`
+- [x] Confirm how a pool address is derived from a script
+- [x] Confirm how reserve/state values can be stored in coin state
+- [x] Confirm how scripts verify required outputs and output values
+- [x] Confirm exact Minima script functions available for output checks
+- [x] Confirm wrong output amount fails at script level even when transaction amounts balance
+- [x] Confirm wrong output token ID fails at script level
+- [x] Confirm wrong output index fails at script level
+- [x] Confirm `storestate:false` fails when `VERIFYOUT(... TRUE)` is required
+- [x] Confirm `SUMINPUTS(tokenid)` / `SUMOUTPUTS(tokenid)` can enforce token conservation
+- [x] Choose V1 working structure: one state coin plus separate reserve coins
+- [x] Validate that one state coin plus separate reserve coins is practical on Minima for a tiny MINIMA-only prototype
+- [x] Prove reserve coins cannot move without a valid state transition
+- [x] Prove state transition cannot pass without exact reserve outputs
+- [ ] Keep combined state/reserve coin design as fallback only if tests require it
+- [x] Repeat state-plus-reserve test with a non-MINIMA test token reserve
+- [x] Confirm token amount semantics for `VERIFYOUT`, `SUMINPUTS`, and `SUMOUTPUTS`
+- [x] Confirm short non-MINIMA token outputs can show `validamounts:true` while failing script checks
+- [x] Confirm `tokencreate` command surface for initial LP-token minting research
+- [x] Choose V1 LP accounting model: pre-minted script-locked fungible LP token supply
+- [ ] Confirm LP token mint or allocation mechanics
+- [ ] Confirm LP token burn or withdrawal mechanics
+- [ ] Store circulating LP supply as canonical pool state
+- [ ] Cross-check circulating LP supply against script-locked unallocated LP reserve
+- [x] Choose LP token decimals and `lp_display_scale`: 8 decimals, scale 1
+- [ ] Confirm first-liquidity LP release formula targets about 1 USDT per LP token
+- [ ] Design LP token metadata and image asset
+- [ ] Display estimated value per LP token in the MiniDAPP
+- [ ] Display redeemable MINIMA and USDT per LP token in the MiniDAPP
+- [x] Run first script-size check for representative V1 skeletons
+- [ ] Confirm script size, instruction, and proof-size limits for V1 transactions
 - [ ] Identify state UTXO design
 - [ ] Identify reserve coin control design
 - [ ] Identify user coin-selection rules for pending UTXOs and change outputs
@@ -174,7 +212,9 @@ https://github.com/Charles0xhorizonxyz/the-minima-pool
 - [ ] Implement remove liquidity with fake tokens
 - [ ] Implement swaps with fake tokens
 - [ ] Reject wrong token IDs
+- [ ] Reject wrong USDT token ID in script, not only UI
 - [ ] Enforce minimum output
+- [ ] Reject over-balance, zero, negative, and malformed inputs before transaction construction
 - [ ] Verify fee accounting
 - [ ] Verify fee changes cannot bypass bounds
 - [ ] Verify LP-holder governance cannot move funds or bypass AMM rules
@@ -203,6 +243,7 @@ https://github.com/Charles0xhorizonxyz/the-minima-pool
 - [ ] Sharded pool-state research
 - [ ] Batch/intents research
 - [ ] Public market-maker vault logic specification
+- [ ] Maximize managed-strategy research
 - [ ] L2/vault research
 
 None of these should block the first single-state AMM prototype.

@@ -88,7 +88,24 @@ LP tokens represent ownership of the pool.
 
 If a user owns 10% of the LP token supply, the user owns 10% of the pool reserves.
 
-When liquidity is removed, LP tokens are burned and the user receives a proportional share of:
+V1 uses pre-minted fungible LP tokens. The unallocated LP supply must be locked under the pool script, not held by an admin wallet.
+
+Circulating LP supply is tracked in pool state and cross-checked against the script-locked unallocated LP reserve.
+
+Initial LP issuance should target a starting display value close to `1 USDT` per LP token:
+
+```text
+initial_lp_released = initial_usdt_deposit * 2 * lp_display_scale
+```
+
+V1 uses:
+
+```text
+LP token decimals = 8
+lp_display_scale = 1
+```
+
+When liquidity is removed, LP tokens are returned to the pool-controlled unallocated LP reserve, or burned only if the script explicitly validates that path. The user receives a proportional share of:
 
 - MINIMA reserves
 - USDT reserves

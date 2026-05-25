@@ -237,6 +237,7 @@ Safety and review:
 
 - `SECURITY.md` - security posture and reporting
 - `TESTPLAN.md` - test strategy
+- `docs/security-review.md` - attack surface and white-hat review scope
 - `docs/risk-disclosures.md` - user-facing risk categories
 - `docs/deployment-plan.md` - staged deployment approach
 - `docs/execution-checklist.md` - current execution status
